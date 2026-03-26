@@ -23,3 +23,5 @@ obj/
 # Environment and secrets
 appsettings.Development.json
 appsettings.json
+
+create_table.sql
