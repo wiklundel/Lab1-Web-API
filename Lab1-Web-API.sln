@@ -1,0 +1,30 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "prenumerant-api", "prenumerant-api\prenumerant-api.csproj", "{5C520169-82DC-BDC1-5C9F-86FBAA8CCDA7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "annons-web", "annons-web\annons-web.csproj", "{70E0FF27-AC34-5930-1254-8DB7716967B4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5C520169-82DC-BDC1-5C9F-86FBAA8CCDA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C520169-82DC-BDC1-5C9F-86FBAA8CCDA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C520169-82DC-BDC1-5C9F-86FBAA8CCDA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C520169-82DC-BDC1-5C9F-86FBAA8CCDA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70E0FF27-AC34-5930-1254-8DB7716967B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70E0FF27-AC34-5930-1254-8DB7716967B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70E0FF27-AC34-5930-1254-8DB7716967B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70E0FF27-AC34-5930-1254-8DB7716967B4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E5AC56DE-09F8-4370-9241-F2DD9CAED535}
+	EndGlobalSection
+EndGlobal

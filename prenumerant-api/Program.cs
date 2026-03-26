@@ -1,5 +1,16 @@
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend",
+        policy =>
+        {
+            policy.WithOrigins("https://localhost:5002")    // MVC-app
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+});
+
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
