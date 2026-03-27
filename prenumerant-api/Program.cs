@@ -1,3 +1,6 @@
+using prenumerant_api.Models;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors(options =>
@@ -14,6 +17,9 @@ builder.Services.AddCors(options =>
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+builder.Services.AddDbContext<SubscriberDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("SubscriberConnection")));
 
 var app = builder.Build();
 
