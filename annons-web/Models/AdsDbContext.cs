@@ -32,20 +32,20 @@ public partial class AdsDbContext : DbContext
             entity.ToTable("tbl_ads");
 
             entity.Property(e => e.AdId).HasColumnName("ad_id");
-            entity.Property(e => e.AdvertiserId).HasColumnName("advertiser_id");
-            entity.Property(e => e.Content).HasColumnName("content");
-            entity.Property(e => e.Fee)
+            entity.Property(e => e.AdAdvertiserId).HasColumnName("ad_advertiser_id");
+            entity.Property(e => e.AdContent).HasColumnName("ad_content");
+            entity.Property(e => e.AdFee)
                 .HasPrecision(10, 2)
-                .HasColumnName("fee");
-            entity.Property(e => e.Price)
+                .HasColumnName("ad_fee");
+            entity.Property(e => e.AdPrice)
                 .HasPrecision(10, 2)
-                .HasColumnName("price");
-            entity.Property(e => e.Title)
+                .HasColumnName("ad_price");
+            entity.Property(e => e.AdTitle)
                 .HasMaxLength(100)
-                .HasColumnName("title");
+                .HasColumnName("ad_title");
 
-            entity.HasOne(d => d.Advertiser).WithMany(p => p.TblAds)
-                .HasForeignKey(d => d.AdvertiserId)
+            entity.HasOne(d => d.AdAdvertiser).WithMany(p => p.TblAds)
+                .HasForeignKey(d => d.AdAdvertiserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("tbl_ads_advertiser_id_fkey");
         });

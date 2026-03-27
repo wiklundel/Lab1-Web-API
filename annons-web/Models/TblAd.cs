@@ -7,15 +7,15 @@ public partial class TblAd
 {
     public int AdId { get; set; }
 
-    public string Title { get; set; } = null!;
+    public string AdTitle { get; set; } = null!;
 
-    public string Content { get; set; } = null!;
+    public string AdContent { get; set; } = null!;
 
-    public decimal Price { get; set; }
+    public decimal AdPrice { get; set; }
 
-    public decimal Fee { get; set; }
+    public decimal AdFee { get; set; }
 
-    public int AdvertiserId { get; set; }
+    public int AdAdvertiserId { get; set; }
 
-    public virtual TblAdvertiser Advertiser { get; set; } = null!;
+    public virtual TblAdvertiser AdAdvertiser { get; set; } = null!;
 }
