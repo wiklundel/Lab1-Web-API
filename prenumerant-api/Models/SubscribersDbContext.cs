@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace prenumerant_api.Models;
 
-public partial class SubscriberDbContext : DbContext
+public partial class SubscribersDbContext : DbContext
 {
-    public SubscriberDbContext()
+    public SubscribersDbContext()
     {
     }
 
-    public SubscriberDbContext(DbContextOptions<SubscriberDbContext> options)
+    public SubscribersDbContext(DbContextOptions<SubscribersDbContext> options)
         : base(options)
     {
     }
