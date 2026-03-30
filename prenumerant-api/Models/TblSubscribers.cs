@@ -5,7 +5,7 @@ namespace prenumerant_api.Models;
 
 public partial class TblSubscriber
 {
-    public int SubscriberNr { get; set; }
+    public int SubscriberId { get; set; }
 
     public string Name { get; set; } = null!;
 

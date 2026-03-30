@@ -21,13 +21,13 @@ public partial class SubscribersDbContext : DbContext
     {
         modelBuilder.Entity<TblSubscriber>(entity =>
         {
-            entity.HasKey(e => e.SubscriberNr).HasName("tbl_subscribers_pkey");
+            entity.HasKey(e => e.SubscriberId).HasName("tbl_subscribers_pkey");
 
             entity.ToTable("tbl_subscribers");
 
-            entity.Property(e => e.SubscriberNr)
+            entity.Property(e => e.SubscriberId)
                 .UseIdentityAlwaysColumn()
-                .HasColumnName("subscriber_nr");
+                .HasColumnName("subscriber_id");
             entity.Property(e => e.City)
                 .HasMaxLength(100)
                 .HasColumnName("city");

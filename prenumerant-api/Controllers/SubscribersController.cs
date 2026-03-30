@@ -23,7 +23,7 @@ public class SubscribersController : Controller
     public async Task<ActionResult<TblSubscriber>> GetSubscriber(long id)
     {
         var subscriber = await _context.TblSubscribers
-            .FirstOrDefaultAsync(s => s.SubscriberNr == id);
+            .FirstOrDefaultAsync(s => s.SubscriberId == id);
 
         if (subscriber == null)
         {
@@ -40,14 +40,14 @@ public class SubscribersController : Controller
         await _context.SaveChangesAsync();
 
         return CreatedAtAction(nameof(GetSubscriber),
-        new { id = subscriber.SubscriberNr },
+        new { id = subscriber.SubscriberId },
         subscriber);
     }
 
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateSubscriber(long id, TblSubscriber subscriber)
     {
-        if (id != subscriber.SubscriberNr)
+        if (id != subscriber.SubscriberId)
         {
             return BadRequest();
         }
@@ -60,7 +60,7 @@ public class SubscribersController : Controller
         }
         catch (DbUpdateConcurrencyException)
         {
-            if (!_context.TblSubscribers.Any(e => e.SubscriberNr == id))
+            if (!_context.TblSubscribers.Any(e => e.SubscriberId == id))
                 return NotFound();
             
             throw;
