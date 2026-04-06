@@ -1,0 +1,124 @@
+@using annons_web.Controllers;
+@using annons_web.Models;
+
+@model CreateAdViewModel;
+
+<div class="head-item">
+    <h2>Skapa annons</h2>
+    <a class="btn1" asp-controller="Ads" asp-action="Index">Avbryt</a>
+</div>
+
+<form asp-action="GetSubscriber" method="post">
+    <div  class="ad-item">
+        @foreach(var type in Enum.GetValues(typeof(TblAnnonsorer.AdvertiserTypeEnum)))
+        {
+            <label>
+                <input asp-for="AdvertiserType" type="radio" value="@type" onclick="toggleFields()" />
+                @(type.ToString() == "Subscriber" ? "Prenumerant" : "Företag")
+            </label>
+            <br />
+        }
+    </div>
+
+    <div id="subscriberSection" style="display: none; margin-top: 15px;">
+        <input asp-for="SubscriberId" class="container" placeholder="Prenumerationsnummer" />
+        <span asp-validation-for="SubscriberId"></span>
+        <div class="ad-item">
+            <input type="submit" class="btn2" value="Hämta uppgifter" />
+        </div>
+    </div>
+</form>
+
+<hr />
+
+<form asp-action="Create" method="post">
+    <input asp-for="AdvertiserType" type="hidden" class="container" />
+    <input asp-for="SubscriberId" type="hidden" class="container" />
+
+    <div id="commonFields">
+        <div class="ad-item">
+            @*<label asp-for="Name">Namn</label>*@
+            <input asp-for="Name" class="container" placeholder="Namn"/>
+            <span asp-validation-for="Name"></span>
+        </div>
+        
+        <div class="ad-item">
+            <input asp-for="PhoneNr" class="container" placeholder="Telefonnummer" />
+            <span asp-validation-for="PhoneNr"></span>
+        </div>
+
+        <div class="ad-item">
+            <input asp-for="DeliveryAddress" class="container" placeholder="Adress" />
+            <span asp-validation-for="DeliveryAddress"></span>
+        </div>
+
+        <div class="ad-item">
+            <input asp-for="Postcode" class="container" placeholder="Postkod" />
+            <span asp-validation-for="Postcode"></span>
+        </div>
+
+        <div class="ad-item">
+            <input asp-for="City" class="container" placeholder="Ort" />
+            <span asp-validation-for="City"></span>
+        </div>
+    </div>
+
+    <div id="companyFields" style="display: none;">
+        <div class="ad-item">
+            <input asp-for="CorporateRegNr" class="container" placeholder="Organisationsnummer" />
+            <span asp-validation-for="CorporateRegNr"></span>
+        </div>
+
+        <div class="ad-item">
+            <input asp-for="InvoiceAddress" class="container" placeholder="Fakturaadress" />
+            <span asp-validation-for="InvoiceAddress"></span>
+        </div>
+    </div>
+
+    <hr />
+    
+    <h3>Annons</h3>
+    
+    <div class="ad-item">
+        <input asp-for="Title" class="container" placeholder="Rubrik" />
+        <span asp-validation-for="Title"></span>
+    </div>
+
+    <div class="ad-item">
+        <input asp-for="Content" class="container" placeholder="Innehåll" />
+        <span asp-validation-for="Content"></span>
+    </div>
+
+    <div class="ad-item">
+        <input asp-for="Price" class="container" placeholder="Varans pris" />
+        <span asp-validation-for="Price"></span>
+    </div>
+
+    <div class="ad-item">
+        <input type="submit" value="Spara annons" class="btn1" />
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        function toggleFields() {
+            const selected = document.querySelector('input[name="AdvertiserType"]:checked');
+
+            if (!selected) return;
+
+            if (selected.value === "Subscriber") {
+                document.getElementById("subscriberSection").style.display = "block";
+                document.getElementById("companyFields").style.display = "none";
+            } else if (selected.value === "Company") {
+                document.getElementById("subscriberSection").style.display = "none";
+                document.getElementById("companyFields").style.display = "block";
+            }
+        }
+
+        window.onload = function () {
+            toggleFields();
+        };
+    </script>
+}

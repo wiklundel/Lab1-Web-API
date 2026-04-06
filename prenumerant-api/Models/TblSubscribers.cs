@@ -9,11 +9,11 @@ public partial class TblSubscriber
 
     public string Name { get; set; } = null!;
 
-    public int SocialSecurityNr { get; set; }
+    public string SocialSecurityNr { get; set; } = "";
 
-    public int PhoneNr { get; set; }
+    public string PhoneNr { get; set; } = "";
 
-    public int Postcode { get; set; }
+    public string Postcode { get; set; } = "";
 
     public string City { get; set; } = null!;
 

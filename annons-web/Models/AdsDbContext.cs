@@ -17,7 +17,7 @@ public partial class AdsDbContext : DbContext
 
     public virtual DbSet<TblAd> TblAds { get; set; }
 
-    public virtual DbSet<TblAdvertiser> TblAdvertisers { get; set; }
+    public virtual DbSet<TblAnnonsorer> TblAnnonsorer { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -43,14 +43,14 @@ public partial class AdsDbContext : DbContext
             entity.HasOne(d => d.AdAdvertiser).WithMany(p => p.TblAds)
                 .HasForeignKey(d => d.AdAdvertiserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("tbl_ads_advertiser_id_fkey");
+                .HasConstraintName("tbl_ads_annonsorer_id_fkey");
         });
 
-        modelBuilder.Entity<TblAdvertiser>(entity =>
+        modelBuilder.Entity<TblAnnonsorer>(entity =>
         {
-            entity.HasKey(e => e.AdvertiserId).HasName("tbl_advertiser_pkey");
+            entity.HasKey(e => e.AdvertiserId).HasName("tbl_annonsorer_pkey");
 
-            entity.ToTable("tbl_advertiser");
+            entity.ToTable("tbl_annonsorer");
 
             entity.Property(e => e.AdvertiserId)
                 .UseIdentityAlwaysColumn()

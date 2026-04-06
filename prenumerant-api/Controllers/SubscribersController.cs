@@ -4,13 +4,15 @@ using prenumerant_api.Models;
 
 namespace prenumerant_api.Controllers;
 
-public class SubscribersController : Controller
+[ApiController]
+[Route("api/[controller]")]
+public class SubscribersController : ControllerBase
 {
     private readonly SubscribersDbContext _context;
 
     public SubscribersController(SubscribersDbContext context)
     {
-        this._context = _context;
+        _context = context;
     }
 
     [HttpGet]

@@ -17,5 +17,5 @@ public partial class TblAd
 
     public int AdAdvertiserId { get; set; }
 
-    public virtual TblAdvertiser AdAdvertiser { get; set; } = null!;
+    public virtual TblAnnonsorer AdAdvertiser { get; set; } = null!;
 }

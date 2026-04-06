@@ -1,0 +1,43 @@
+@using annons_web.Controllers;
+@using annons_web.Models;
+
+@model IEnumerable<annons_web.Models.TblAd>;
+
+@{
+    ViewData["Title"] = "Annonser";
+}
+
+
+<h2>Annonser</h2>
+<a class="btn1" asp-action="Create" asp-controller="Ads">Skapa annons</a>
+<div class="marketplace-grid">
+    @foreach (var ad in Model)
+    {
+        <div class="market-card">
+            <div class="market-card-image">
+                <span>Ingen bild</span>
+            </div>
+
+            <div class="market-card-body">
+                <div class="market-price">@ad.AdPrice kr</div>
+                <div class="market-title">@ad.AdTitle</div>
+                <div class="market-meta">
+                    Ort: @ad.AdAdvertiser?.City <br>
+                    Annonsavgift: @ad.AdFee kr
+                </div>
+                <div class="market-description">@ad.AdContent</div>
+                <div class="market-footer">
+                    <span class="market-seller">@ad.AdAdvertiser?.Name</span>
+                    @if (ad.AdAdvertiser?.AdvertiserType.ToString() == "Comapny")
+                    {
+                        <span class="market-badge company">Företag</span>
+                    }
+                    else
+                    {
+                        <span class="market-badge subscriber">Prenumerant</span>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
