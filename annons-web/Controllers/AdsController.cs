@@ -105,17 +105,39 @@ public class AdsController : Controller
     }
 
     private TblAnnonsorer MapToAdvertiser(CreateAdViewModel model)
-{
-    return new TblAnnonsorer
     {
-        Name = model.Name,
-        PhoneNr = model.PhoneNr,
-        DeliveryAddress = model.DeliveryAddress,
-        Postcode = model.Postcode,
-        City = model.City,
-        CorporateRegNr = model.CorporateRegNr,
-        InvoiceAddress = model.InvoiceAddress,
-        AdvertiserType = model.AdvertiserType
-    };
-}
+        return new TblAnnonsorer
+        {
+            Name = model.Name,
+            PhoneNr = model.PhoneNr,
+            DeliveryAddress = model.DeliveryAddress,
+            Postcode = model.Postcode,
+            City = model.City,
+            CorporateRegNr = model.CorporateRegNr,
+            InvoiceAddress = model.InvoiceAddress,
+            AdvertiserType = model.AdvertiserType
+        };
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> ImportXml(IFormFile file)
+    {
+        var client = _httpClient.CreateClient();
+
+        var content = new MultipartFormDataContent();
+        content.Add(new StreamContent(file.OpenReadStream()), "file", file.FileName);
+
+        var response = await client.PostAsync(
+            "http://localhost:5021/api/subscribers/import/xml",
+            content
+        );
+
+        if (!response.IsSuccessStatusCode)
+        {
+            ModelState.AddModelError("", "Import misslyckades");
+            return View("Index");
+        }
+
+        return RedirectToAction("Index");
+    }
 }

@@ -1,5 +1,7 @@
+using System.Xml.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Npgsql.Internal;
 using prenumerant_api.Models;
 
 namespace prenumerant_api.Controllers;
@@ -83,5 +85,76 @@ public class SubscribersController : ControllerBase
         await _context.SaveChangesAsync();
 
         return NoContent();
-    }   
+    }
+
+    [HttpGet("export/xml")]
+    public async Task<IActionResult> ExportSubscribersToXml()
+    {
+        var subscribers = await _context.TblSubscribers
+            .Select(s => new SubscriberXmlDto
+            {
+                SubscriberId = s.SubscriberId,
+                Name = s.Name,
+                SocialSecurtiyNr = s.SocialSecurityNr,
+                PhoneNr = s.PhoneNr,
+                DeliveryAddress = s.DeliveryAddress,
+                Postcode = s.Postcode,
+                City = s.City
+            })
+            .ToListAsync();
+            
+        var xmlDto = new SubscribersXmlDto { Subscribers = subscribers };
+
+        var serializer = new XmlSerializer(typeof(SubscribersXmlDto));
+        using var stream  = new MemoryStream();
+        serializer.Serialize(stream, xmlDto);
+        stream.Position = 0;
+
+        return File(stream.ToArray(), "application/xml", "subscribers.xml");
+    }
+
+    [HttpPost("import/xml")]
+    public async Task<IActionResult> ImportSubscribersFromXml(IFormFile file)
+    {
+        if (file == null || file.Length == 0)
+        {
+            return BadRequest("Ingen fil vald");
+        }
+
+        SubscribersXmlDto? xmlDto;
+
+        var serializer = new XmlSerializer(typeof(SubscribersXmlDto));
+
+        using (var stream = file.OpenReadStream())
+        {
+            xmlDto = serializer.Deserialize(stream) as SubscribersXmlDto;
+        }
+
+        if (xmlDto == null || xmlDto.Subscribers.Count == 0)
+        {
+            return BadRequest("Filen innehpller inga prenumeranter");
+        }
+
+        foreach (var s in xmlDto.Subscribers)
+        {
+            var exists = await _context.TblSubscribers.AnyAsync(x => x.SubscriberId == s.SubscriberId);
+
+            if (!exists)
+            {
+                _context.TblSubscribers.Add(new TblSubscriber
+                {
+                    SubscriberId = s.SubscriberId,
+                    Name = s.Name,
+                    SocialSecurityNr = s.SocialSecurtiyNr,
+                    PhoneNr = s.PhoneNr,
+                    DeliveryAddress = s.DeliveryAddress,
+                    Postcode = s.Postcode,
+                    City = s.City
+                });
+            }
+        }
+
+        await _context.SaveChangesAsync();
+        return Ok("Import klar");
+    }
 }

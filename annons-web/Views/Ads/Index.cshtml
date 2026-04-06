@@ -8,8 +8,22 @@
 }
 
 
-<h2>Annonser</h2>
-<a class="btn1" asp-action="Create" asp-controller="Ads">Skapa annons</a>
+
+<div class="head-item">
+    <h2>Annonser</h2>
+    <a class="btn1" asp-action="Create" asp-controller="Ads">Skapa annons</a>
+</div>
+
+
+<a class="btn2" href="http://localhost:5021/api/subscribers/export/xml">
+    Exportera xml
+</a>
+
+<form asp-action="ImportXml" method="post" enctype="multipart/form-data">
+    <label for="fileUpload" class="btn2">Importera XML</label>
+    <input type="file" id="fileUpload" name="file" hiden onchange="this.form.submit()"/>
+</form>
+
 <div class="marketplace-grid">
     @foreach (var ad in Model)
     {
