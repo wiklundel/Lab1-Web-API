@@ -11,7 +11,7 @@ public class SubscriberXmlDto
 {
     public int SubscriberId { get; set; }
     public string Name { get; set; } = "";
-    public string SocialSecurtiyNr { get; set; } = "";
+    public string SocialSecurityNr { get; set; } = "";
     public string PhoneNr { get; set; } = "";
     public string DeliveryAddress { get; set; } = "";
     public string Postcode { get; set; } = "";

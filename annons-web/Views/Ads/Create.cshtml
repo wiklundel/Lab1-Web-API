@@ -13,7 +13,10 @@
         @foreach(var type in Enum.GetValues(typeof(TblAnnonsorer.AdvertiserTypeEnum)))
         {
             <label>
-                <input asp-for="AdvertiserType" type="radio" value="@type" onclick="toggleFields()" />
+                <input asp-for="AdvertiserType"
+                    type="radio"
+                    value="@type"
+                    onclick="toggleFields(); syncAdvertiserType()" />
                 @(type.ToString() == "Subscriber" ? "Prenumerant" : "Företag")
             </label>
             <br />
@@ -32,7 +35,7 @@
 <hr />
 
 <form asp-action="Create" method="post">
-    <input asp-for="AdvertiserType" type="hidden" class="container" />
+    <input asp-for="AdvertiserType" type="hidden" id="hiddenAdvertiserType" />
     <input asp-for="SubscriberId" type="hidden" class="container" />
 
     <div id="commonFields">
@@ -90,6 +93,12 @@
     </div>
 
     <div class="ad-item">
+        <select name="selectedCurrency">
+            <option value="SEK">SEK</option>
+            <option value="EUR">EUR</option>
+            <option value="USD">USD</option>
+            <option value="GBP">GBP</option>
+        </select>
         <input asp-for="Price" class="container" placeholder="Varans pris" />
         <span asp-validation-for="Price"></span>
     </div>
@@ -103,10 +112,25 @@
     <partial name="_ValidationScriptsPartial" />
 
     <script>
-        function toggleFields() {
+        function syncAdvertiserType()
+        {
+            const selected = document.querySelector('input[name="AdvertiserType"]:checked');
+            if (!selected) return;
+
+            const hidden = document.getElementById("hiddenAdvertiserType");
+            if (hidden)
+            {
+                hidden.value = selected.value;
+            }
+        }
+
+        function toggleFields()
+        {
             const selected = document.querySelector('input[name="AdvertiserType"]:checked');
 
             if (!selected) return;
+
+            syncAdvertiserType();
 
             if (selected.value === "Subscriber") {
                 document.getElementById("subscriberSection").style.display = "block";

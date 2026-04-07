@@ -21,4 +21,8 @@ public class CreateAdViewModel
     public string Title { get; set; } = "";
     public string Content { get; set; } = "";
     public int Price { get; set; }
+
+    // Valutakurser
+    public string SelectedCurrency { get; set; } = "SEK";
+    public decimal ConvertedCurrency { get; set; }
 }

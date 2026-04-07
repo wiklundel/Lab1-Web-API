@@ -1,11 +1,13 @@
 using annons_web.Models;
 using Microsoft.EntityFrameworkCore;
+using annons_web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient();
+builder.Services.AddHttpClient<CurrencyService>();
 
 builder.Services.AddDbContext<AdsDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("AdsConnection")));

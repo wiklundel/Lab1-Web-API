@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Subscribers>
+  <Subscriber>
+    <Name>Test Person</Name>
+    <SocialSecurityNr>010101-1234</SocialSecurityNr>
+    <PhoneNr>0701234567</PhoneNr>
+    <DeliveryAddress>Testgatan 1</DeliveryAddress>
+    <Postcode>12345</Postcode>
+    <City>Umeå</City>
+  </Subscriber>
+</Subscribers>

@@ -56,7 +56,6 @@ public partial class AdsDbContext : DbContext
                 .UseIdentityAlwaysColumn()
                 .HasColumnName("advertiser_id");
             entity.Property(e => e.AdvertiserType)
-                .HasMaxLength(20)
                 .HasColumnName("advertiser_type");
             entity.Property(e => e.City)
                 .HasMaxLength(100)

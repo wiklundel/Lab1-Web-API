@@ -1,13 +1,20 @@
 @using annons_web.Controllers;
 @using annons_web.Models;
 
-@model IEnumerable<annons_web.Models.TblAd>;
+@model IEnumerable<AdListItemViewModel>;
 
 @{
     ViewData["Title"] = "Annonser";
 }
+@if (TempData["ImportError"] != null)
+{
+    <div class="alert alert-danger">@TempData["ImportError"]</div>
+}
 
-
+@if (TempData["ImportSuccess"] != null)
+{
+    <div class="alert alert-success">@TempData["ImportSuccess"]</div>
+}
 
 <div class="head-item">
     <h2>Annonser</h2>
@@ -21,7 +28,16 @@
 
 <form asp-action="ImportXml" method="post" enctype="multipart/form-data">
     <label for="fileUpload" class="btn2">Importera XML</label>
-    <input type="file" id="fileUpload" name="file" hiden onchange="this.form.submit()"/>
+    <input type="file" id="fileUpload" name="file" hidden onchange="this.form.submit()"/>
+</form>
+
+<form method="get" asp-action="Index">
+    <select name="selectedCurrency" onchange="this.form.submit()">
+        <option value="SEK" selected="@(ViewBag.SelectedCurrency == "SEK")">SEK</option>
+        <option value="EUR" selected="@(ViewBag.SelectedCurrency == "EUR")">EUR</option>
+        <option value="USD" selected="@(ViewBag.SelectedCurrency == "USD")">USD</option>
+        <option value="GBP" selected="@(ViewBag.SelectedCurrency == "GBP")">GBP</option>
+    </select>
 </form>
 
 <div class="marketplace-grid">
@@ -33,16 +49,16 @@
             </div>
 
             <div class="market-card-body">
-                <div class="market-price">@ad.AdPrice kr</div>
-                <div class="market-title">@ad.AdTitle</div>
+                <div class="market-price">@ad.DisplayPrice @ad.Currency</div>
+                <div class="market-title">@ad.Title</div>
                 <div class="market-meta">
-                    Ort: @ad.AdAdvertiser?.City <br>
-                    Annonsavgift: @ad.AdFee kr
+                    Ort: @ad.City <br>
+                    Annonsavgift: @ad.DisplayFee @ad.Currency
                 </div>
-                <div class="market-description">@ad.AdContent</div>
+                <div class="market-description">@ad.Content</div>
                 <div class="market-footer">
-                    <span class="market-seller">@ad.AdAdvertiser?.Name</span>
-                    @if (ad.AdAdvertiser?.AdvertiserType.ToString() == "Comapny")
+                    <span class="market-seller">@ad.SellerName</span>
+                    @if (ad.AdvertiserType.ToString() == "Company")
                     {
                         <span class="market-badge company">Företag</span>
                     }

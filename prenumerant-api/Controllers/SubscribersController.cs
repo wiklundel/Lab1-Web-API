@@ -95,18 +95,22 @@ public class SubscribersController : ControllerBase
             {
                 SubscriberId = s.SubscriberId,
                 Name = s.Name,
-                SocialSecurtiyNr = s.SocialSecurityNr,
+                SocialSecurityNr = s.SocialSecurityNr,
                 PhoneNr = s.PhoneNr,
                 DeliveryAddress = s.DeliveryAddress,
                 Postcode = s.Postcode,
                 City = s.City
             })
             .ToListAsync();
-            
-        var xmlDto = new SubscribersXmlDto { Subscribers = subscribers };
+
+        var xmlDto = new SubscribersXmlDto
+        {
+            Subscribers = subscribers
+        };
 
         var serializer = new XmlSerializer(typeof(SubscribersXmlDto));
-        using var stream  = new MemoryStream();
+
+        using var stream = new MemoryStream();
         serializer.Serialize(stream, xmlDto);
         stream.Position = 0;
 
@@ -137,15 +141,15 @@ public class SubscribersController : ControllerBase
 
         foreach (var s in xmlDto.Subscribers)
         {
-            var exists = await _context.TblSubscribers.AnyAsync(x => x.SubscriberId == s.SubscriberId);
+            var exists = await _context.TblSubscribers
+                .AnyAsync(x => x.SocialSecurityNr == s.SocialSecurityNr);
 
             if (!exists)
             {
                 _context.TblSubscribers.Add(new TblSubscriber
                 {
-                    SubscriberId = s.SubscriberId,
                     Name = s.Name,
-                    SocialSecurityNr = s.SocialSecurtiyNr,
+                    SocialSecurityNr = s.SocialSecurityNr,
                     PhoneNr = s.PhoneNr,
                     DeliveryAddress = s.DeliveryAddress,
                     Postcode = s.Postcode,

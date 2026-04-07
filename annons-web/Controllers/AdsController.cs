@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using annons_web.Models;
 using System.Text.Json;
+using annons_web.Services;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace annons_web.Controllers;
 
@@ -9,21 +11,46 @@ public class AdsController : Controller
 {
     private readonly AdsDbContext _context;
     private readonly IHttpClientFactory _httpClient;
+    private readonly CurrencyService _currencyService;
 
-    public AdsController(AdsDbContext context, IHttpClientFactory httpClient)
+    public AdsController(AdsDbContext context, IHttpClientFactory httpClient, CurrencyService currencyService)
     {
         _context = context;
         _httpClient = httpClient;
+        _currencyService = currencyService;
     }
 
     [HttpGet]
-    public IActionResult Index()
+    public async Task<IActionResult> Index(string selectedCurrency = "SEK")
     {
         var ads = _context.TblAds
             .Include(a => a.AdAdvertiser)
             .ToList();
 
-        return View(ads);
+        var result = new List<AdListItemViewModel>();
+
+        foreach (var ad in ads)
+        {
+            var convertedPrice = await _currencyService.ConvertFromSekAsync(ad.AdPrice, selectedCurrency);
+            var convertedFee = await _currencyService.ConvertFromSekAsync(ad.AdFee, selectedCurrency);
+
+            result.Add(new AdListItemViewModel
+            {
+                Title = ad.AdTitle,
+                Content = ad.AdContent,
+                OriginalPrice = ad.AdPrice,
+                DisplayPrice = convertedPrice ?? ad.AdPrice,
+                OriginalFee = ad.AdFee,
+                DisplayFee = convertedFee ?? ad.AdFee,
+                Currency = selectedCurrency,
+                SellerName = ad.AdAdvertiser?.Name ?? "",
+                City = ad.AdAdvertiser?.City ?? "",
+                AdvertiserType = ad.AdAdvertiser?.AdvertiserType.ToString() ?? ""
+            });
+        }
+
+        ViewBag.SelectedCurrency = selectedCurrency;
+        return View(result);
     }
 
     [HttpGet]
@@ -84,6 +111,8 @@ public class AdsController : Controller
         {
             return View(model);
         }
+        
+        Console.WriteLine($"AdvertiserType: {model.AdvertiserType}");
 
         var advertiser = MapToAdvertiser(model);
 
@@ -122,6 +151,12 @@ public class AdsController : Controller
     [HttpPost]
     public async Task<IActionResult> ImportXml(IFormFile file)
     {
+        if (file == null || file.Length == 0)
+        {
+            TempData["ImportError"] = "Ingen fil vald.";
+            return RedirectToAction("Index");
+        }
+
         var client = _httpClient.CreateClient();
 
         var content = new MultipartFormDataContent();
@@ -134,10 +169,12 @@ public class AdsController : Controller
 
         if (!response.IsSuccessStatusCode)
         {
-            ModelState.AddModelError("", "Import misslyckades");
-            return View("Index");
+            var error = await response.Content.ReadAsStringAsync();
+            TempData["ImportError"] = $"Import misslyckades: {error}";
+            return RedirectToAction("Index");
         }
 
+        TempData["ImportSuccess"] = "Import lyckades.";
         return RedirectToAction("Index");
     }
 }
