@@ -37,56 +37,6 @@ public class SubscribersController : ControllerBase
         return subscriber;
     }
 
-    [HttpPost]
-    public async Task<ActionResult<TblSubscriber>> CreateSubscriber(TblSubscriber subscriber)
-    {
-        _context.TblSubscribers.Add(subscriber);
-        await _context.SaveChangesAsync();
-
-        return CreatedAtAction(nameof(GetSubscriber),
-        new { id = subscriber.SubscriberId },
-        subscriber);
-    }
-
-    [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateSubscriber(long id, TblSubscriber subscriber)
-    {
-        if (id != subscriber.SubscriberId)
-        {
-            return BadRequest();
-        }
-
-        _context.Entry(subscriber).State = EntityState.Modified;
-
-        try
-        {
-            await _context.SaveChangesAsync();
-        }
-        catch (DbUpdateConcurrencyException)
-        {
-            if (!_context.TblSubscribers.Any(e => e.SubscriberId == id))
-                return NotFound();
-            
-            throw;
-        }
-
-        return NoContent();
-    }
-
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteSubscriber(long id)
-    {
-        var subscriber = await _context.TblSubscribers.FindAsync(id);
-
-        if (subscriber == null)
-            return NotFound();
-
-        _context.TblSubscribers.Remove(subscriber);
-        await _context.SaveChangesAsync();
-
-        return NoContent();
-    }
-
     [HttpGet("export/xml")]
     public async Task<IActionResult> ExportSubscribersToXml()
     {

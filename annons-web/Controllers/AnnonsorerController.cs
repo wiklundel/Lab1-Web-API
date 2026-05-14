@@ -36,16 +36,6 @@ public class AnnonsorerController : Controller
         if (!ModelState.IsValid)
             return View(model);
 
-        if(model.AdvertiserType == TblAnnonsorer.AdvertiserTypeEnum.Subscriber)
-        {
-            // hämta data från API med prenumerationsnummer
-            
-        }
-        else
-        {
-            // Företag
-        }
-
         var annonsor = new TblAnnonsorer
         {
             Name = model.Name,
